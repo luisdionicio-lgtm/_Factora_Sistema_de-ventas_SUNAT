@@ -1,0 +1,25 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Factora Â· ejecutar aplicaciÃ³n",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/run.py",
+      "python": "${workspaceFolder}/.venv/Scripts/python.exe",
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal",
+      "env": {
+        "HOST": "127.0.0.1",
+        "PORT": "8003",
+        "PYTHONUTF8": "1"
+      },
+      "serverReadyAction": {
+        "pattern": "Factora: (http://\\S+)",
+        "uriFormat": "%s",
+        "action": "openExternally"
+      },
+      "justMyCode": true
+    }
+  ]
+}

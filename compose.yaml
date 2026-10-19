@@ -1,0 +1,18 @@
+services:
+  app:
+    build: .
+    ports:
+      - "127.0.0.1:8000:8000"
+    environment:
+      COOKIE_SECURE: "${COOKIE_SECURE:-0}"
+      FISCAL_API_KEY: "${FISCAL_API_KEY:-}"
+      FISCAL_API_SECRET: "${FISCAL_API_SECRET:-}"
+    volumes:
+      - factora_data:/data
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+volumes:
+  factora_data:

@@ -1,0 +1,9 @@
+{
+  "python.defaultInterpreterPath": "${workspaceFolder}/.venv/Scripts/python.exe",
+  "python.testing.pytestEnabled": true,
+  "python.testing.unittestEnabled": false,
+  "python.testing.pytestArgs": ["tests"],
+  "files.exclude": {"**/__pycache__": true, ".pytest_cache": true},
+  "search.exclude": {".venv": true, "node_modules": true, "backups": true},
+  "editor.tabSize": 2
+}

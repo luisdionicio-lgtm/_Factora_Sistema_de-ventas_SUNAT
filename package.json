@@ -1,0 +1,14 @@
+{
+  "name": "factora-dev-tools",
+  "version": "1.0.0",
+  "private": true,
+  "description": "QA opcional; no necesario para ejecutar Factora",
+  "scripts": {
+    "test:e2e": "node tests/e2e.cjs",
+    "format": "prettier --write \"app/static/**/*.js\" \"app/static/**/*.css\""
+  },
+  "devDependencies": {
+    "playwright": "1.62.1",
+    "prettier": "3.6.2"
+  }
+}
