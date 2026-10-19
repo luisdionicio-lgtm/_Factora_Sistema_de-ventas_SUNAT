@@ -1,0 +1,23 @@
+.venv/
+__pycache__/
+.pytest_cache/
+data/
+backups/
+*.db
+*.db-shm
+*.db-wal
+.env
+node_modules/
+test-results/
+
+# Private configuration and generated files
+.env.*
+!.env.example
+*fiscal-secrets*
+*provider-profile*
+*.pfx
+*.p12
+*.pem
+*.key
+*.log
+work/
