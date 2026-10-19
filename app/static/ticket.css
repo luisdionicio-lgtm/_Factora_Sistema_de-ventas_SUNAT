@@ -1,0 +1,244 @@
+.document {
+  width: 80mm;
+  max-width: 80mm;
+  min-height: 0;
+}
+.document-inner {
+  padding: 17px 13px;
+}
+.accent-rule {
+  height: 4px;
+  border-right-width: 45px;
+}
+.document-header {
+  display: block;
+  text-align: center;
+  padding-bottom: 12px;
+}
+.issuer {
+  max-width: none;
+}
+.issuer-identity {
+  justify-content: center;
+  gap: 9px;
+  flex-direction: column;
+}
+.company-mark {
+  width: 37px;
+  height: 37px;
+  font-size: 22px;
+}
+.overline {
+  font-size: 8px;
+}
+h1 {
+  font-size: 17px;
+}
+.issuer-details {
+  font-size: 10px;
+  margin-top: 9px;
+}
+.document-id {
+  min-width: 0;
+  text-align: center;
+  padding-top: 13px;
+  border-top: 1px dashed #ccc;
+  margin-top: 14px;
+}
+.document-kind {
+  font-size: 10px;
+}
+.document-id > strong {
+  font-size: 18px;
+  margin: 6px 0;
+}
+.draft-badge {
+  font-size: 8px;
+}
+.fiscal-notice {
+  margin: 0 0 15px;
+  padding: 10px 0;
+  gap: 7px;
+}
+.fiscal-notice strong {
+  font-size: 8px;
+}
+.fiscal-notice p {
+  font-size: 9px;
+}
+.notice-mark {
+  width: 18px;
+  height: 18px;
+}
+.customer-section {
+  display: block;
+  margin-bottom: 18px;
+}
+.customer-details {
+  max-width: none;
+}
+.customer-details h2 {
+  font-size: 12px;
+}
+.customer-details p {
+  font-size: 10px;
+}
+.metadata {
+  min-width: 0;
+  margin-top: 13px;
+  font-size: 9px;
+  gap: 4px;
+}
+.items {
+  font-size: 9px;
+}
+.items .item-index {
+  display: none;
+}
+.items th {
+  font-size: 8px;
+  padding: 8px 3px;
+  white-space: normal;
+}
+.items td {
+  padding: 10px 3px;
+}
+.items td b {
+  font-size: 9px;
+}
+.items small {
+  font-size: 8px;
+}
+.items th:last-child,
+.items td:last-child {
+  padding-right: 2px;
+}
+.settlement {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 14px;
+  margin: 14px 0 20px;
+}
+.totals {
+  width: 100%;
+}
+.totals > div {
+  font-size: 10px;
+  padding: 4px 0;
+}
+.totals .grand-total {
+  background: none;
+  color: #172b1e;
+  border-top: 2px solid #182e20;
+  border-bottom: 2px solid #182e20;
+  border-radius: 0;
+  padding: 10px 0;
+  margin-top: 8px;
+}
+.grand-total > strong {
+  font-size: 20px;
+}
+.grand-total small {
+  color: #172b1e;
+  font-size: 12px;
+}
+.sale-note {
+  max-width: none;
+  padding: 0;
+}
+.sale-note p {
+  font-size: 9px;
+}
+.internal-reference {
+  display: none;
+}
+.thank-you {
+  text-align: center;
+  padding: 15px 0;
+}
+.thank-you h3 {
+  font-size: 12px;
+}
+.thank-you p {
+  font-size: 9px;
+}
+.document-footer {
+  display: block;
+  text-align: center;
+  padding-top: 13px;
+}
+.document-footer > div > span {
+  display: none;
+}
+.document-footer p {
+  text-align: center;
+  font-size: 8px;
+  margin-top: 8px;
+}
+.document-footer strong {
+  font-size: 17px;
+}
+.print-tip {
+  max-width: 300px;
+  margin: 20px auto;
+}
+.tools {
+  max-width: 900px;
+}
+@media print {
+  @page {
+    size: 80mm 300mm;
+    margin: 3mm;
+  }
+  body {
+    width: 74mm;
+    padding: 0;
+    background: white;
+  }
+  .document {
+    width: 74mm;
+    max-width: 74mm;
+    margin: 0;
+    box-shadow: none;
+  }
+  .document-inner {
+    padding: 4px 1px;
+  }
+  .document-header {
+    display: block;
+  }
+  .issuer,
+  .customer-details {
+    max-width: none;
+  }
+  .document-id {
+    min-width: 0;
+    text-align: center;
+    border-top: 1px dashed #555;
+  }
+  .customer-section {
+    display: block;
+  }
+  .metadata {
+    min-width: 0;
+  }
+  .items .item-index {
+    display: none;
+  }
+  .settlement {
+    flex-direction: column-reverse;
+  }
+  .totals {
+    width: 100%;
+  }
+  .sale-note {
+    max-width: none;
+  }
+  .document-footer {
+    display: block;
+  }
+  .tools,
+  .print-tip {
+    display: none;
+  }
+}
