@@ -64,6 +64,19 @@ def initialize_fiscal():
     ''')
 
 
+@bp.before_request
+def restrict_emitter():
+    # The server owner explicitly assigns global provider credentials to a tenant.
+    # Registration or being an admin is never enough to claim those credentials.
+    from .security import protect
+    @protect(admin=True)
+    def check():
+        allowed = current_app.config.get('FISCAL_COMPANY_ID', os.environ.get('FISCAL_COMPANY_ID', ''))
+        if str(g.company) != str(allowed):
+            abort(403, description='El servidor no ha autorizado la integración fiscal para este negocio.')
+    return check()
+
+
 def account():
     a = row('SELECT * FROM fiscal_accounts WHERE company_id=?', (g.company,))
     if not a:
@@ -111,7 +124,13 @@ def series():
 @protect(admin=True)
 def documents():
     get_db().execute("UPDATE fiscal_documents SET status='POR_VERIFICAR' WHERE company_id=? AND status='ENVIANDO' AND datetime(created_at)<datetime('now','-2 minutes')", (g.company,))
-    return jsonify(rows('SELECT id,sale_id,kind,remote_id,status,response,created_at FROM fiscal_documents WHERE company_id=? ORDER BY id DESC', (g.company,)))
+    docs = rows('SELECT id,sale_id,kind,remote_id,status,response,created_at FROM fiscal_documents WHERE company_id=? ORDER BY id DESC LIMIT 1000', (g.company,))
+    for doc in docs:
+        source = json.loads(doc['response'] or '{}')
+        sunat = source.get('sunat') or {}
+        doc['response'] = json.dumps({'numero_completo': source.get('numero_completo'),
+            'sunat': {key: sunat.get(key) for key in ('estado','codigo','descripcion')}})
+    return jsonify(docs)
 
 
 def sale_payload(sale):

@@ -7,7 +7,7 @@ from test_app import account, product, sale
 
 @pytest.fixture
 def setup(tmp_path):
-    app = create_app({'TESTING':True,'DATABASE':str(tmp_path/'fiscal.db')})
+    app = create_app({'TESTING':True,'DATABASE':str(tmp_path/'fiscal.db'),'FISCAL_COMPANY_ID':1})
     c,h = account(app)
     pid = product(c,h)
     sid = c.post('/api/sales',headers=h,json=sale(pid)).json['id']
@@ -64,9 +64,9 @@ def test_tenant_isolation_csrf_and_link_required(setup):
         assert c.post('/api/fiscal/connect',json={}).status_code==403
         c.post('/api/fiscal/connect',headers=h,json={})
         other,oh=account(app,'other@example.com')
-        assert other.post('/api/fiscal/connect',headers=oh,json={}).status_code==409
-        assert other.get('/api/fiscal/documents').json==[]
-        assert other.get('/api/fiscal/documents/1/pdf').status_code==409
+        assert other.post('/api/fiscal/connect',headers=oh,json={}).status_code==403
+        assert other.get('/api/fiscal/documents').status_code==403
+        assert other.get('/api/fiscal/documents/1/pdf').status_code==403
 
 
 def test_guide_requires_identified_recipient(setup):
@@ -135,3 +135,24 @@ def test_refresh_updates_sale_status(setup):
     with patch('app.fiscal.provider',side_effect=rejected_response):
         assert c.post(f'/api/fiscal/documents/{result.json["id"]}/refresh',headers=h,json={}).json['status']=='rechazado'
         assert c.get(f'/api/sales/{sid}').json['fiscal_status']=='rechazado'
+
+
+def test_fiscal_denies_unconfigured_server(setup):
+    app,c,h,sid,pid=setup
+    app.config['FISCAL_COMPANY_ID']=''
+    with patch('app.fiscal.provider') as external:
+        assert c.get('/api/fiscal/profile').status_code==403
+        assert c.post('/api/fiscal/connect',headers=h,json={}).status_code==403
+        external.assert_not_called()
+
+
+def test_provider_private_fields_never_reach_browser(setup):
+    from app.db import get_db
+    import json
+    app,c,h,sid,pid=setup
+    with app.app_context():
+        get_db().execute('INSERT INTO fiscal_documents(company_id,sale_id,kind,status,payload,response) VALUES(?,?,?,?,?,?)',
+            (1,sid,'boleta','aceptado','{}',json.dumps({'numero_completo':'B001-1','api_secret':'PRIVATE_SENTINEL','cliente':{'document':'PRIVATE_DNI'},'sunat':{'estado':'aceptado'}})))
+    r=c.get('/api/fiscal/documents')
+    assert r.status_code==200
+    assert b'PRIVATE_SENTINEL' not in r.data and b'PRIVATE_DNI' not in r.data

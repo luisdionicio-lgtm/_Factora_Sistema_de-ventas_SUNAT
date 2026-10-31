@@ -78,6 +78,8 @@ El comprobante interno y el documento electrónico tienen numeraciones independi
 
 ## Configuración de la API
 
+La integración requiere `FISCAL_COMPANY_ID` con el ID del negocio local autorizado. Por defecto queda bloqueada. Consulta [Seguridad](SECURITY.md) para configurarlo antes de vincular el emisor.
+
 **No se incluyen API Key, API Secret, certificados, claves SOL ni datos de la cuenta utilizada durante el desarrollo.** Cada persona debe utilizar sus propias credenciales de Kodevo. El adaptador está implementado en `app/fiscal.py` y apunta a `https://sunat.kodevo.es/api/v1/`.
 
 Para una ejecución local, configura variables reales del sistema antes de iniciar el servidor. Ejemplo de PowerShell, reemplazando los valores ilustrativos:
@@ -116,7 +118,7 @@ El volumen conserva la base de datos. Para usar el proveedor en Docker, copia `.
 .venv\Scripts\python.exe -m pytest -q
 ```
 
-La versión publicada cuenta con **22 pruebas de backend**. Las pruebas fiscales automatizadas simulan respuestas del proveedor: no necesitan credenciales ni crean documentos externos.
+La versión publicada cuenta con **24 pruebas de backend**. Las pruebas fiscales automatizadas simulan respuestas del proveedor: no necesitan credenciales ni crean documentos externos.
 
 Para comprobar la interfaz:
 

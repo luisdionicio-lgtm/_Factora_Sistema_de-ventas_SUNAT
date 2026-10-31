@@ -45,6 +45,10 @@ def create_app(config=None):
         response.headers["X-Content-Type-Options"] = "nosniff"
         response.headers["X-Frame-Options"] = "DENY"
         response.headers["Referrer-Policy"] = "same-origin"
+        response.headers["Permissions-Policy"] = "camera=(), microphone=(), geolocation=()"
+        response.headers["Cross-Origin-Resource-Policy"] = "same-origin"
+        if app.config["COOKIE_SECURE"]:
+            response.headers["Strict-Transport-Security"] = "max-age=31536000"
         response.headers["Content-Security-Policy"] = (
             "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'"
         )
@@ -67,7 +71,7 @@ def create_app(config=None):
 
     @app.errorhandler(Exception)
     def unexpected(e):
-        app.logger.exception("Unhandled error")
+        app.logger.error("Unhandled error type: %s", type(e).__name__)
         return (
             jsonify(error="No se pudo completar la operación. Inténtalo nuevamente."),
             500,
@@ -80,6 +84,9 @@ def create_app(config=None):
         return d
 
     def login_response(user):
+        previous = request.cookies.get("factora_session")
+        if previous:
+            get_db().execute("DELETE FROM sessions WHERE token=?", (token_hash(previous),))
         token = secrets.token_urlsafe(32)
         csrf = secrets.token_urlsafe(32)
         get_db().execute("DELETE FROM sessions WHERE expires<?", (int(time.time()),))

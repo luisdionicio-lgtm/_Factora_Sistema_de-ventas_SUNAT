@@ -5,6 +5,7 @@ services:
       - "127.0.0.1:8000:8000"
     environment:
       COOKIE_SECURE: "${COOKIE_SECURE:-0}"
+      FISCAL_COMPANY_ID: "${FISCAL_COMPANY_ID:-}"
       FISCAL_API_KEY: "${FISCAL_API_KEY:-}"
       FISCAL_API_SECRET: "${FISCAL_API_SECRET:-}"
     volumes:
